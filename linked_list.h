@@ -1,18 +1,20 @@
-// Vinicius Eiske Hashimoto -- 2016.2
+// Copyright [2016] <Vinicius Eiske Hashimoto>
 
 #ifndef STRUCTURES_LINKED_LIST_H
 #define STRUCTURES_LINKED_LIST_H
 
 #include <cstdint>
 #include <stdexcept>
-#include <iostream>
 
 namespace structures {
 
 template<typename T>
-class LinkedList {
-public:
 
+/**
+ * @brief Linked list's class
+*/
+class LinkedList {
+ public:
     /**
      * @brief      Construtor padrão.
      */
@@ -20,14 +22,12 @@ public:
         head = nullptr;
         size_ = 0;
     }
-    
     /**
      * @brief      Destrutor da classe LinkedList
      */
     ~LinkedList() {
         clear();
     }
-    
     /**
      * @brief      Limpa lista
      * 
@@ -38,14 +38,13 @@ public:
         Node *atual, *anterior;
         atual = head;
         head = nullptr;
-        while(atual != nullptr) {
+        while ( atual != nullptr ) {
             anterior = atual;
             atual = atual->next();
             delete anterior;
         }
         size_ = 0u;
     }
-    
     /**
      * @brief      push_back
      *
@@ -56,7 +55,6 @@ public:
     void push_back(const T& data) {
         insert(data, size_);
     }
-    
     /**
      * @brief      Pushes a front.
      *
@@ -66,14 +64,13 @@ public:
      */
     void push_front(const T& data) {
         Node *novo = new Node(data, head);
-        if(novo == nullptr) {
+        if (novo == nullptr) {
             throw std::out_of_range("Lista cheia");
         } else {
             head = novo;
             ++size_;
         }
     }
-    
     /**
      * @brief      Insert
      *
@@ -84,28 +81,25 @@ public:
      */
     void insert(const T& data, std::size_t index) {
         Node *anterior, *novo;
-        if(index > size_) {
-            throw std::out_of_range ("Erro de posicao.");
-        }else if (index == 0) {
+        if (index > size_) {
+          throw std::out_of_range("Erro de posicao.");
+        } else if (index == 0) {
             push_front(data);
         } else {
             novo = new Node(data);
-            if(novo == nullptr) {
-                throw std::out_of_range ("Lista cheia");
+            if (novo == nullptr) {
+                throw std::out_of_range("Lista cheia");
             } else {
                 anterior = head;
-                for(int i = 0; i < index - 1; ++i) {
+                for (int i = 0; i < index - 1; ++i) {
                     anterior = anterior->next();
                 }
-                //novo->next() = anterior->next();
-                //"novo.next(anterior.next())"
                 novo->next(anterior->next());
                 anterior->next(novo);
                 ++size_;
             }
         }
     }
-    
     /**
      * @brief      insert_sorted
      *
@@ -116,24 +110,22 @@ public:
     void insert_sorted(const T& data) {
         Node *atual;
         int posicao;
-        if(empty()) {
+        if (empty()) {
             return push_front(data);
         } else {
             atual = head;
             posicao = 0;
-            while(atual->next() != nullptr && data > atual->data()) {
+            while (atual->next() != nullptr && data > atual->data()) {
                 atual = atual->next();
                 ++posicao;
-            } 
-
-            if(data > atual->data()) {
-                return(insert(data,posicao+1));
+            }
+            if (data > atual->data()) {
+                return(insert(data, posicao+1));
             } else {
-                return(insert(data,posicao));
+                return(insert(data, posicao));
             }
         }
     }
-    
     /**
      * @brief      At
      *
@@ -144,19 +136,18 @@ public:
      * Verify the list if the position is valid.
      */
     T& at(std::size_t index) {
-        if(index < 0) {
+        if (index < 0) {
             throw std::out_of_range("erro");
         }
         Node *aux = head;
         for (int i = 0; i < index; ++i) {
             if (aux->next() == nullptr) {
-                throw std::out_of_range ("Erro de posicao.");
+                throw std::out_of_range("Erro de posicao.");
             }
             aux = aux->next();
         }
         return aux->data();
     }
-    
     /**
      * @brief      Pop
      *
@@ -168,23 +159,20 @@ public:
      */
     T pop(std::size_t index) {
         if (empty()) {
-            throw std::out_of_range ("Vazio.");
+            throw std::out_of_range("Vazio.");
         }
         Node *anterior, *elimina;
         T volta;
-        if(index > size_-1) {
+        if (index > size_-1) {
             throw std::out_of_range("Erro posicao.");
-        } else if (index == 0){
+        } else if (index == 0) {
             return(pop_front());
         } else {
             anterior = head;
             for (int i = 0; i < index-1; ++i) {
                 anterior = anterior->next();
-                //std::cout << anterior->next()->data() << std::endl;
-
             }
             elimina = anterior->next();
-            //std::cout << elimina->data() << std::endl;
             volta = elimina->data();
             anterior->next(elimina->next());
             --size_;
@@ -192,7 +180,6 @@ public:
             return volta;
         }
     }
-    
     /**
      * @brief      Pop back
      *
@@ -203,8 +190,6 @@ public:
     T pop_back() {
         return pop(size_ - 1);
     }
-    
-
     /**
      * @brief      Pop front
      *
@@ -215,7 +200,7 @@ public:
     T pop_front() {
         Node *saiu;
         T volta;
-        if(empty()) {
+        if (empty()) {
             throw std::out_of_range("Lista vazia.");
         } else {
             saiu = head;
@@ -226,8 +211,6 @@ public:
             return volta;
         }
     }
-
-
     /**
      * @brief      Remove
      *
@@ -238,8 +221,6 @@ public:
     void remove(const T& data) {
         pop(find(data));
     }
-
-	
     /**
      * @brief      Empty
      *
@@ -248,13 +229,12 @@ public:
      * Verify the list if is empty or not.
      */
     bool empty() const {
-        if(size_ == 0) {
+        if (size_ == 0) {
             return true;
         } else {
             return false;
         }
     }
-
     /**
      * @brief      Contains
      *
@@ -266,16 +246,14 @@ public:
      */
     bool contains(const T& data) const {
         Node *aux = head;
-        while(aux != nullptr) {
-            if(aux->data() == data) {
+        while (aux != nullptr) {
+            if (aux->data() == data) {
                 return true;
             }
             aux = aux->next();
         }
         return false;
     }
-
-    
     /**
      * @brief      Searches for the first match.
      *
@@ -283,25 +261,23 @@ public:
      *
      * @return     Position
      */
-    std::size_t find(const T& data) const {   
-    	Node *caixa = head;
+    std::size_t find(const T& data) const {
+        Node *caixa = head;
         std::size_t pos;
-        if(empty()) {
+        if (empty()) {
             return (-1);
         } else {
             pos = 0;
-            while(caixa->data() != data) {
+            while (caixa->data() != data) {
                 caixa = caixa->next();
                 ++pos;
-                if(caixa == nullptr) {
+                if (caixa == nullptr) {
                     break;
                 }
             }
             return pos;
         }
     }
-
-    
     /**
      * @brief      Return the size of list.
      *
@@ -311,11 +287,10 @@ public:
         return size_;
     }
 
-private:
-	// Elemento
+ private:
     class Node {
-    public:
-        Node(const T& data):
+     public:
+        explicit Node(const T& data):
             data_{data}
         {}
 
@@ -324,47 +299,41 @@ private:
             next_{next}
         {}
 
-        // getter: dado
         T& data() {
             return data_;
         }
 
-        // getter const: dado
         const T& data() const {
             return data_;
         }
 
-        // getter: próximo
         Node* next() {
             return next_;
         }
 
-        // getter const: próximo
         const Node* next() const {
             return next_;
         }
- 		// setter: próximo
+
         void next(Node* node) {
             next_ = node;
         }
 
-    private:
-        T data_;//_info
-        Node* next_{nullptr};//_proximo
+     private:
+        T data_;
+        Node* next_{nullptr};
     };
 
-    Node* end() { // último nodo da lista
+    Node* end() {
         auto it = head;
         for (auto i = 1u; i < size(); ++i) {
             it = it->next();
-		}
+        }
         return it;
     }
 
-    Node* head{nullptr};//_dados
-    std::size_t size_{0u};//_tamanho
+    Node* head{nullptr};
+    std::size_t size_{0u};
 };
-
-}
-
+}  // namespace structures
 #endif
