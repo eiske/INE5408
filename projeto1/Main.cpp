@@ -2,6 +2,8 @@
 #include "Cashier.h"
 #include <fstream>
 #include <iostream>
+#include <cstdint>
+#include <stdexcept>
 
 void verificaSeCriaCliente(Supermarket superMarket){
 	if(superMarket.relogio == superMarket.tempoChegada){
@@ -50,7 +52,7 @@ void verificaSeCriaCliente(Supermarket superMarket){
 }
 
 void file() {
-	ifstream file;
+	std::ifstream file;
 	file.open("./market.dat");
 	char linha[50];
 
@@ -61,18 +63,18 @@ void file() {
 		std::string nomeMercado;
 		int tempoSimulacao;
 		int tempoChegada;
-		int numeroCaixas;
+		std::vector <numeroCaixas>;
 
 		nomeMercado = linha;
 		file >> tempoSimulacao;
 		file >> tempoChegada;
 		file >> numeroCaixas;
 		// Supermarket(int tempoSimulacao_, int tempoChegada_, std::vector<Cashier> caixas_, char nome_[])
-		market = (new Supermarket(tempoSimulacao, tempoChegada, numeroCaixas, nomeMercado));
+		Supermarket market = (new Supermarket(tempoSimulacao, tempoChegada, numeroCaixas, nomeMercado));
 
 
 	} else {
-		cout << "Não foi possível abrir." << end;
+		std::cout << "Não foi possível abrir.";
 	}
 }
 
