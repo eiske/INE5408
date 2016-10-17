@@ -6,8 +6,6 @@
 #include <cstdint>
 #include <stdexcept>
 
-namespace structures {
-
 /**
  * @brief Implements a circular linked list
  * @details This is an implementation of a circular linked list. Here, head
@@ -303,8 +301,6 @@ private:
     Node* head;
     std::size_t size_{0u};
 };
-
-}  // namespace structures
 
 #endif
 

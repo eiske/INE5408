@@ -158,4 +158,3 @@ class LinkedQueue {
     Node* tail;
     std::size_t size_;
 };
-

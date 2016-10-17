@@ -1,15 +1,7 @@
-/*
- * Main.cpp
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #include "Supermarket.h"
 #include "Cashier.h"
-//Supermarket superMarket;
-
-	
+#include <fstream>
+#include <iostream>
 
 void verificaSeCriaCliente(Supermarket superMarket){
 	if(superMarket.relogio == superMarket.tempoChegada){
@@ -57,6 +49,32 @@ void verificaSeCriaCliente(Supermarket superMarket){
 	}
 }
 
+void file() {
+	ifstream file;
+	file.open("./market.dat");
+	char linha[50];
+
+	if (file.is_open()) {
+		while (!file.eof()) {
+			file.getline(linha, 50);  // Le uma linha inteira
+		}
+		std::string nomeMercado;
+		int tempoSimulacao;
+		int tempoChegada;
+		int numeroCaixas;
+
+		nomeMercado = linha;
+		file >> tempoSimulacao;
+		file >> tempoChegada;
+		file >> numeroCaixas;
+		// Supermarket(int tempoSimulacao_, int tempoChegada_, std::vector<Cashier> caixas_, char nome_[])
+		market = (new Supermarket(tempoSimulacao, tempoChegada, numeroCaixas, nomeMercado));
+
+
+	} else {
+		cout << "Não foi possível abrir." << end;
+	}
+}
 
 int main(int argc, char **argv) {
 		char nomeMercado[] = "mercado";

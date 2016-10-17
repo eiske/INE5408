@@ -1,15 +1,8 @@
-/*
- * Supermarket.h
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #ifndef SUPERMARKET_H_
 #define SUPERMARKET_H_
 #include <vector>
 #include "Client.h"
-#include "circularlist.h"
+#include "CircularList.h"
 #include "Cashier.h"
 
 class Supermarket {
@@ -19,8 +12,13 @@ class Supermarket {
  	std::vector<Cashier> caixas;
  	char nome[];
  	Supermarket(int tempoSimulacao_, int tempoChegada, std::vector<Cashier> caixas_, int totalDeCaixas, char nome[]);
+ 	Supermarket(int tempoSimulacao_, int tempoChegada_, std::vector<Cashier> caixas_, char nome_[])
  	void comecaCaixas();
  	Client geraCliente();
+ 	void 
 };
+
+
+
 
 #endif

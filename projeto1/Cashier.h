@@ -1,10 +1,3 @@
-/*
- * Cashier.h
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #ifndef CASHIER_H_
 #define CASHIER_H_
 

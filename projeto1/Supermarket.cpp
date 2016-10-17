@@ -1,13 +1,5 @@
-/*
- * Supermarket.cpp
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #include "Supermarket.h"
 #include <string.h>
-
 
 Supermarket::Supermarket(int tempoSimulacao_, int tempoChegada_, std::vector<Cashier> caixas_, int totalDeCaixas_, char nome_[]) {
 	relogio = 0;

@@ -1,10 +1,3 @@
-/*
- * Client.cpp
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #include "Client.h"
 #include <stdlib.h>
 #include <time.h>

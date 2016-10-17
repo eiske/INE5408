@@ -1,10 +1,3 @@
-/*
- * Cashier.cpp
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #include "Cashier.h"
 
 #include <string>
@@ -50,4 +43,3 @@ int Cashier::calculaCompras() {
 	}
 	return total;
 }
-

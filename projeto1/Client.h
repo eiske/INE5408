@@ -1,10 +1,3 @@
-/*
- * Client.h
- *
- *  Created on: 10 de out de 2016
- *      Author: macelai
- */
-
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
