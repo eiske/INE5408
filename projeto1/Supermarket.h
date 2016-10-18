@@ -12,10 +12,8 @@ class Supermarket {
  	std::vector<Cashier> caixas;
  	char nome[];
  	Supermarket(int tempoSimulacao_, int tempoChegada, std::vector<Cashier> caixas_, int totalDeCaixas, char nome[]);
- 	Supermarket(int tempoSimulacao_, int tempoChegada_, std::vector<Cashier> caixas_, char nome_[]);
  	void comecaCaixas();
  	Client geraCliente();
- 	void 
 };
 
 

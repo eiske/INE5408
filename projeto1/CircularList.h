@@ -141,7 +141,7 @@ public:
      * @return A reference to the element at the given index
      */
     T& at(std::size_t index) const {
-        if (index >= size_) throw std::out_of_range("Index out of bounds");
+        if (index >= size_) throw std::out_of_range("Index out of bounds 1");
         Node* it = head->next();
         for (std::size_t i = 0; i < index; ++i) {
             it = it->next();
@@ -157,7 +157,7 @@ public:
      * @return The element that was removed
      */
     T pop(std::size_t index) {
-        if (index >= size_) throw std::out_of_range("Index out of bounds");
+        if (index >= size_) throw std::out_of_range("Index out of bounds 2");
         Node* it = head;
         for (std::size_t i = 0; i < index; ++i) {
             it = it->next();
