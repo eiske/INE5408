@@ -6,12 +6,14 @@
 #include <fstream>
 #include <stdlib.h>
 #include <string.h>
+
 using namespace std;
 
-vector<Cashier> vetor;
+Supermarket superMarket;
 
-void verificaSeCriaCliente(Supermarket superMarket){
+void verificaSeCriaCliente(){
 	if(superMarket.relogio == superMarket.tempoChegada){
+		printf("a\n");
 		Client novo = superMarket.geraCliente();
 		//verifica se não há fila com menos de 10
 		int aux;
@@ -52,7 +54,7 @@ void verificaSeCriaCliente(Supermarket superMarket){
 	}
 	novo.calculaTempoSaida(superMarket.circList.at(caixa).eficiencia, tempoAnterior);
 	superMarket.circList.at(caixa).queue.enqueue(novo);
-	superMarket.tempoChegada=+superMarket.tempoChegada;
+	superMarket.tempoChegada = superMarket.tempoChegada + superMarket.tempoChegadaNovo;
 	}
 }
 
@@ -69,32 +71,56 @@ int main(int argc, char **argv) {
 	arquivo >> tempoChegada;
 	arquivo >> numeroCaixas;
 
-	/*cout << "Nome do Supermercado: " << nomeMercado << endl;
-	cout << "Tempo de Simulacao: " << tempoSimulacao << endl;
-	cout << "Tempo medio de chegada de clientes: " << tempoChegada << " segundos."<< endl;
-	cout << "Numero de caixas: " << numeroCaixas << endl;*/
-
-	Supermarket sp(tempoSimulacao, tempoChegada, vetor, numeroCaixas, nomeMercado);
+	Cashier* array;
+	array = new Cashier[numeroCaixas];
 
 	for (int i = 0; i < numeroCaixas; ++i) {
-		arquivo.getline(linha, 100);
+		arquivo >> nomeCaixa;
+		arquivo >> eficiencia;
+		arquivo >> salario;
+		Cashier c(eficiencia, salario, nomeCaixa);
+		array[i] = c;
+
+		cout << "nomeCaixa: " << nomeCaixa << endl;
+		cout << "eficiencia: " << eficiencia << endl;
+		cout << "salario: " << salario << "\n" << endl;
+	}
+
+	cout << "Nome do Supermercado: " << nomeMercado << endl;
+	cout << "Tempo de Simulacao: " << tempoSimulacao << endl;
+	cout << "Tempo medio de chegada de clientes: " << tempoChegada << " segundos."<< endl;
+	cout << "Numero de caixas: " << numeroCaixas << "\n" << endl;
+
+	//arquivo.getline(linha,200);
+
+
+	/*for (int i = 0; i < numeroCaixas; i++) {
+		arquivo.getline(linha,200);	  
 		sub = strtok(linha, "-");
-		strncpy(nomeCaixa, sub, 80);
+		strncpy(nomeCaixa,sub,80);
 		sub = strtok(NULL, "-");
 		eficiencia = atoi(sub);
 		sub = strtok(NULL, "-");
 		salario = atoi(sub);
-		Cashier cash(eficiencia, salario, nomeCaixa);
-		vetor.push_back(cash);
-	}
+		printf("%d\n", eficiencia);
+		Cashier c(eficiencia, salario, nomeCaixa);
+		array[i] = c;
+	}*/
 
-	sp.comecaCaixas();
-	while(sp.relogio <= sp.tempoSimulacao) {
-		for(int i = 0; i < sp.circList.size(); ++i){
-			sp.circList.at(i).verificaSeSai(sp.relogio);
+	/*Cashier c1(1, 800, nomeMercado);
+	array[0] = c1;
+	array[1] = c1;
+	array[2] = c1;*/
+	superMarket = Supermarket(tempoSimulacao, tempoChegada, array, numeroCaixas, nomeMercado);
+
+	//superMarket.circList.push_front(array[0]);
+	while(superMarket.relogio < superMarket.tempoSimulacao) {
+		for(int i = 0; i < superMarket.circList.size(); ++i){
+			superMarket.circList.at(i).verificaSeSai(superMarket.relogio);
 		}
-		verificaSeCriaCliente(sp);
-		++sp.relogio;
+		verificaSeCriaCliente();
+		++superMarket.relogio;
 	}
+	printf("%d\n", superMarket.circList.at(0).clientesAtendidos);
 	return 0;
 }

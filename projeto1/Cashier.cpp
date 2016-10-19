@@ -24,6 +24,9 @@ Cashier::Cashier() {
 }
 
 void Cashier::verificaSeSai(int relogio) {
+	if(queue.empty()){
+		return;
+	} else
 	if(relogio == queue.front().tempoDeSaida){
 		faturamentoTotal =+ queue.front().valorTotalDeCompras;
 		++clientesAtendidos;
