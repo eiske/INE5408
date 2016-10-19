@@ -64,27 +64,17 @@ int main(int argc, char **argv) {
 	int tempoSimulacao, tempoChegada, numeroCaixas, eficiencia, salario;
 	ifstream arquivo("market.dat");
 	
-	arquivo.getline(linha, 100);
-	
+	arquivo.getline(linha, 200);
 	strncpy(nomeMercado, linha, 50);
-	arquivo >> tempoSimulacao;
-	arquivo >> tempoChegada;
-	arquivo >> numeroCaixas;
+	
+	arquivo.getline(linha, 200);
+	tempoSimulacao = atoi(linha);
 
-	Cashier* array;
-	array = new Cashier[numeroCaixas];
+	arquivo.getline(linha, 200);
+	tempoChegada = atoi(linha);
 
-	for (int i = 0; i < numeroCaixas; ++i) {
-		arquivo >> nomeCaixa;
-		arquivo >> eficiencia;
-		arquivo >> salario;
-		Cashier c(eficiencia, salario, nomeCaixa);
-		array[i] = c;
-
-		cout << "nomeCaixa: " << nomeCaixa << endl;
-		cout << "eficiencia: " << eficiencia << endl;
-		cout << "salario: " << salario << "\n" << endl;
-	}
+	arquivo.getline(linha, 200);
+	numeroCaixas = atoi(linha);
 
 	cout << "Nome do Supermercado: " << nomeMercado << endl;
 	cout << "Tempo de Simulacao: " << tempoSimulacao << endl;
@@ -93,19 +83,25 @@ int main(int argc, char **argv) {
 
 	//arquivo.getline(linha,200);
 
+	Cashier* array;
+	array = new Cashier[numeroCaixas];
+	for (int i = 0; i < numeroCaixas; ++i) {
+		arquivo.getline(linha, 200);
+		strcpy(nomeCaixa, linha);
 
-	/*for (int i = 0; i < numeroCaixas; i++) {
-		arquivo.getline(linha,200);	  
-		sub = strtok(linha, "-");
-		strncpy(nomeCaixa,sub,80);
-		sub = strtok(NULL, "-");
-		eficiencia = atoi(sub);
-		sub = strtok(NULL, "-");
-		salario = atoi(sub);
-		printf("%d\n", eficiencia);
+		arquivo.getline(linha, 200);
+		eficiencia = atoi(linha);
+
+		arquivo.getline(linha, 200);
+		salario = atoi(linha);
+
+		cout << "Nome: " << nomeCaixa << endl;
+		cout << "Eficiencia: " << eficiencia << endl;
+		cout << "Salario: " << salario << "\n" << endl;
+		
 		Cashier c(eficiencia, salario, nomeCaixa);
 		array[i] = c;
-	}*/
+	}
 
 	/*Cashier c1(1, 800, nomeMercado);
 	array[0] = c1;
@@ -113,7 +109,7 @@ int main(int argc, char **argv) {
 	array[2] = c1;*/
 	superMarket = Supermarket(tempoSimulacao, tempoChegada, array, numeroCaixas, nomeMercado);
 
-	//superMarket.circList.push_front(array[0]);
+	superMarket.circList.push_front(array[0]);
 	while(superMarket.relogio < superMarket.tempoSimulacao) {
 		for(int i = 0; i < superMarket.circList.size(); ++i){
 			superMarket.circList.at(i).verificaSeSai(superMarket.relogio);
