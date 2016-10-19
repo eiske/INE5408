@@ -13,7 +13,7 @@ Supermarket superMarket;
 
 void verificaSeCriaCliente(){
 	if(superMarket.relogio == superMarket.tempoChegada){
-		printf("a\n");
+		//printf("a\n");
 		Client novo = superMarket.geraCliente();
 		//verifica se não há fila com menos de 10
 		int aux;
@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
 	array[2] = c1;*/
 	superMarket = Supermarket(tempoSimulacao, tempoChegada, array, numeroCaixas, nomeMercado);
 
-	superMarket.circList.push_front(array[0]);
+	//superMarket.circList.push_front(array[0]);
 	while(superMarket.relogio < superMarket.tempoSimulacao) {
 		for(int i = 0; i < superMarket.circList.size(); ++i){
 			superMarket.circList.at(i).verificaSeSai(superMarket.relogio);
@@ -117,6 +117,6 @@ int main(int argc, char **argv) {
 		verificaSeCriaCliente();
 		++superMarket.relogio;
 	}
-	printf("%d\n", superMarket.circList.at(0).clientesAtendidos);
+	//printf("%d\n", superMarket.circList.at(0).clientesAtendidos);
 	return 0;
 }
