@@ -4,10 +4,10 @@
 class Client {
  public:
 	int tipoDoCliente, tipoDePagamento, valorTotalDeCompras, tempoDeChegada, tempoDeSaida, totalDeCompras;
-	int* compras;
  	Client(int tempo);
  	int calculaTempo(int eficiencia);
  	void calculaTempoSaida(int eficiencia, int tempoAnterior);
+ 	int calculaTempoAnterior(int eficiencia);
 };
 
 #endif /* CLIENT_H_ */

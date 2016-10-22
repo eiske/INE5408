@@ -17,6 +17,7 @@ class LinkedQueue {
         head = nullptr;
         tail = nullptr;
     }
+
 //! Destrutor padrão.
 /*!
 */
@@ -27,16 +28,9 @@ class LinkedQueue {
 /*!
 */
     void clear() {
-        Node *atual, *anterior;
-        atual = head;
-        while(atual != nullptr) {
-            anterior = atual;
-            atual = atual->next();
-            delete anterior;
+        while(size_ != 0) {
+            dequeue();
         }
-        size_ = 0;
-        head = nullptr;
-        tail = nullptr;
 }
 //! Adicionar dado na fila, última posição.
 /*!
@@ -111,7 +105,8 @@ class LinkedQueue {
     }
 
     T& at(int k) {
-    	Node* atual;
+        if (k > size_) throw std::out_of_range("BUG");
+    	Node* atual = head;
     	for(int i = 0; i < k; ++i){
     		atual = atual->next();
     	}

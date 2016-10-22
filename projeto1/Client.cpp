@@ -2,17 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 Client::Client(int tempo) {
-	srand (time(0));
 	tipoDoCliente = rand() % 2;
 	tipoDePagamento = (rand() % 10) + 1;
 	totalDeCompras = (rand() % 100) + 2;
-	compras = new int[totalDeCompras];
-	for (int i = 0; i < totalDeCompras-1; ++i) {
-		compras[i] = (rand() % 90) + 1;
-	}
-	for (int i = 0; i < totalDeCompras-1; ++i){
-		valorTotalDeCompras =+ compras[i];
+	valorTotalDeCompras = 0;
+	for (int i = 0; i < totalDeCompras; ++i){
+		valorTotalDeCompras = valorTotalDeCompras + (rand() % 90) + 1;
 	}
 	tempoDeChegada = tempo;
 	tempoDeSaida = 0;
@@ -36,4 +33,8 @@ int Client::calculaTempo(int eficiencia) {
 
 void Client::calculaTempoSaida(int eficiencia, int tempoAnterior) {
 	tempoDeSaida = tempoDeChegada + calculaTempo(eficiencia) + tempoAnterior;
+}
+
+int Client::calculaTempoAnterior(int eficiencia) {
+	return calculaTempo(eficiencia);
 }

@@ -1,5 +1,5 @@
 #include "Cashier.h"
-
+#include <iostream>
 #include <string>
 #include <stdio.h>
 #include <cstring>
@@ -26,11 +26,12 @@ Cashier::Cashier() {
 void Cashier::verificaSeSai(int relogio) {
 	if(queue.empty()){
 		return;
-	} else
+	} else	
 	if(relogio == queue.front().tempoDeSaida){
-		faturamentoTotal =+ queue.front().valorTotalDeCompras;
-		++clientesAtendidos;
+		faturamentoTotal = faturamentoTotal + queue.front().valorTotalDeCompras;
+		if (clientesAtendidos == 0) ++clientesAtendidos;
 		tempoMedioFila = (queue.front().tempoDeSaida - queue.front().tempoDeChegada + tempoMedioFila) / clientesAtendidos;
+		++clientesAtendidos;
 		queue.dequeue();
 	}
 }
@@ -41,8 +42,12 @@ int Cashier::calculaPessoas() {
 
 int Cashier::calculaCompras() {
 	int total = 0;
-	for(int i = 0; i < queue.size(); ++i){
-		total += queue.at(i).totalDeCompras;
+	if(queue.empty()) {
+		return total;
+	} else {
+		for(int i = 0; i < queue.size(); ++i){
+			total = total + queue.at(i).totalDeCompras;
+		}
 	}
 	return total;
 }

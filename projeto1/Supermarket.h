@@ -9,11 +9,11 @@ class Supermarket {
  public:
  	CircularList<Cashier> circList{};
  	int relogio, clientesDesistentes, valorComprasDesistentes, tempoSimulacao, tempoChegada, totalDeCaixas, tempoChegadaNovo;
- 	Cashier* caixas;
  	char nome[];
+ 	std::string name;
  	Supermarket();
- 	Supermarket(int tempoSimulacao_, int tempoChegada, Cashier* caixas_, int totalDeCaixas, char nome[]);
- 	void comecaCaixas(int numeroCaixas);
+ 	Supermarket(int tempoSimulacao_, int tempoChegada, int totalDeCaixas, std::string name_);
+ 	Supermarket(int tempoSimulacao_, int tempoChegada, int totalDeCaixas, char nome[]);
  	Client geraCliente();
 };
 
