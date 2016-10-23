@@ -1,3 +1,4 @@
+// UFSC 2016.2 Vinicius Macelai, Vinicius Eiske
 #include "Supermarket.h"
 #include "Cashier.h"
 #include <iostream>
@@ -17,21 +18,20 @@ void verificaSeCriaCliente(){
 	if(superMarket.relogio == superMarket.tempoChegada){
 		Client novo = superMarket.geraCliente();
 		//verifica se não há fila com menos de 10
-		int aux;
+		int aux = 0;
 		for(int i = 0; i < superMarket.circList.size(); ++i){
 			if(superMarket.circList.at(i).calculaPessoas() > 9){
 				++aux;
 			}
 		}
-
 		if(aux == superMarket.circList.size()){
 			superMarket.valorComprasDesistentes = superMarket.valorComprasDesistentes + novo.valorTotalDeCompras * 3;
 			++superMarket.clientesDesistentes;
 			superMarket.tempoChegada = superMarket.tempoChegada + superMarket.tempoChegadaNovo;
 			return;
-		}
+		} 
 		//verifica qual caixa deve ir
-		int caixa;
+		int caixa = 0;
 		if(novo.tipoDoCliente == 0) {
 			int compras = 500;
 			for(int i = 0; i < superMarket.circList.size(); ++i){
@@ -40,8 +40,7 @@ void verificaSeCriaCliente(){
 					caixa = i;
 				}
 			}
-		}
-		else {
+		} else {
 			int pessoas = 500;
 			for(int i = 0; i < superMarket.circList.size(); ++i){
 				if(superMarket.circList.at(i).calculaPessoas() < pessoas) {
@@ -50,17 +49,11 @@ void verificaSeCriaCliente(){
 				}
 			}
 		}
-		if (superMarket.circList.at(caixa).queue.size() > 9) {
-			superMarket.valorComprasDesistentes = superMarket.valorComprasDesistentes + novo.valorTotalDeCompras * 3;
-			++superMarket.clientesDesistentes;
-			superMarket.tempoChegada = superMarket.tempoChegada + superMarket.tempoChegadaNovo;
-			return;
-		}
 		//calcula tempo de saida
 		int tempoAnterior = 0;
 		for(int i = 0; i < superMarket.circList.at(caixa).queue.size(); ++i){
-			tempoAnterior = tempoAnterior + superMarket.circList.at(caixa).queue.at(i).calculaTempoAnterior(
-				superMarket.circList.at(caixa).eficiencia);
+			tempoAnterior = tempoAnterior + superMarket.circList.at(caixa).queue.at(i).tempoDeSaida -
+			superMarket.circList.at(caixa).queue.at(i).tempoDeChegada;
 		}
 		novo.calculaTempoSaida(superMarket.circList.at(caixa).eficiencia, tempoAnterior);
 		superMarket.circList.at(caixa).queue.enqueue(novo);
@@ -92,11 +85,12 @@ void calculaDados(){
 	printf("Tempo médio na fila: %d\n", tempoFila/numeroCaixas);
 	printf("Clientes desistentes: %d\n", superMarket.clientesDesistentes);
 	printf("Faturamento perdido: %d\n", superMarket.valorComprasDesistentes);
-	printf("\nDesenvolvido por Vinicius Macelai e Vinicius Eiske\n");
+	printf("------------------------------------------------\n");
+	printf("\n2016.2 UFSC Vinicius Macelai e Vinicius Eiske\n");
 }
 
 void leituraInfo() {
-	char linha[100], nomeMercado[50], *sub, nomeCaixa[80];
+	char linha[100], nomeMercado[50], nomeCaixa[80];
 	int eficiencia, salario;
 	ifstream arquivo("market.dat");
 	
@@ -141,10 +135,60 @@ void leituraInfo() {
 	}
 }
 
-void mensagemExecucao() {
-	cout << "Selecione a forma de entrada da simulacao:\n";
-	cout << "----- 1: Atraves de arquivo salvo.\n";			
-	cout << "----- 0: Digitar dados.\n";
+void captaInfo() {
+	string nomeMercadoStr, nomeCaixaStr, tempoSimulacaoStr, tempoMedioChegadaStr;
+	string quantidadeCaixaStr, eficienciaCaixaStr, salarioCaixaStr;
+	int eficienciaCaixa, salarioCaixa;
+
+	cout << "Digite o nome do Supermercado.\n";
+	getline(cin, nomeMercadoStr);
+	char * nomeMercado = new char[nomeMercadoStr.length() + 1];
+	strcpy(nomeMercado, nomeMercadoStr.c_str());
+
+	cout << "Digite o tempo de simulacao.\n";
+	getline(cin, tempoSimulacaoStr);
+	tempoSimulacao = stoi(tempoSimulacaoStr);
+
+	cout << "Digite o tempo medio de chegada de clientes.\n";
+	getline(cin, tempoMedioChegadaStr);
+	tempoChegada = stoi(tempoMedioChegadaStr);
+
+	cout << "Digite a quantidade de caixas.\n";
+	getline(cin, quantidadeCaixaStr);
+	numeroCaixas = stoi(quantidadeCaixaStr);
+
+	cout << "Nome do Supermercado: " << nomeMercado << endl;
+	cout << "Tempo de Simulacao: " << tempoSimulacao << " horas"<<endl;
+	cout << "Tempo medio de chegada de clientes: " << tempoChegada << " segundos"<< endl;
+	cout << "Numero de caixas: " << numeroCaixas << "\n" << endl;
+
+	Cashier* array;
+	array = new Cashier[numeroCaixas];
+	for (int i = 0; i < numeroCaixas; i++) {
+		cout << "Digite o nome do caixa.\n";
+		getline(cin, nomeCaixaStr);
+		char * nomeCaixa = new char[nomeCaixaStr.length() + 1];
+		strcpy(nomeCaixa, nomeCaixaStr.c_str());
+
+		cout << "Digite a eficiencia do caixa.\n";
+		getline(cin, eficienciaCaixaStr);
+		eficienciaCaixa = stoi(eficienciaCaixaStr);
+
+		cout << "Digite o salario.\n";
+		getline(cin, salarioCaixaStr);
+		salarioCaixa = stoi(salarioCaixaStr);
+
+		cout << "Nome: " << nomeCaixa << endl;
+		cout << "Eficiencia: " << eficienciaCaixa << endl;
+		cout << "Salario: " << salarioCaixa << "\n" << endl;
+		superMarket = Supermarket(tempoSimulacao, tempoChegada, numeroCaixas, nomeMercado);
+		Cashier c(eficienciaCaixa, salarioCaixa, nomeCaixa);
+		array[i] = c;
+	}
+
+	for(int i = 0; i < numeroCaixas; ++i) {
+		superMarket.circList.push_front(array[i]);
+	}	
 }
 
 bool execucao() {
@@ -171,170 +215,19 @@ bool execucao() {
 	return arquivo;
 }
 
-int totalCaixa() {
-	string totalCaixaStr;
-	int totalCaixaInt;
-	bool verdade = true;
-	cout << "Digite a quantidade de caixa.\n";
-	while(verdade) {
-		getline(std::cin, totalCaixaStr);
-		totalCaixaInt = stoul(totalCaixaStr);
-		if (totalCaixaInt <= 0) {
-			std::cout << "Quantidade insuficiente.";
-			verdade = true;
-			break;
-		} else {
-			verdade = false;
-		}
-	}
-	return totalCaixaInt;
-}
-
-string idCaixa() {
-	string id;
-	bool verdade = true;
-	std::cout << "Digite o identificador do caixa.";
-
-	while (verdade) {
-		getline(std::cin, id);
-		if (id == "") {
-			std::cout << "Identificador invalido.";
-			break;
-		} else {
-			verdade = false;
-		}
-	}
-	return id;
-}
-
-int salarioCaixa() {
-	std::string salarioStr;
-	int salarioInt;
-	bool verdade = true;
-	std::cout << "Digite o salario do caixa.";
-
-	while (verdade) {
-		getline(std::cin, salarioStr);
-		salarioInt = stoi(salarioStr);
-		if (salarioInt == 0) {
-			std::cout << "Salario invalido.";
-			break;
-		} else {
-			verdade = false;
-		}
-	}
-	return salarioInt;
-}
-
-int eficienciaCaixa() {
-	std::string eficienciaStr;
-	int eficienciaInt;
-	bool verdade = true;
-	std::cout << "Digite a eficiência do caixa:\n";
-	std::cout << "\t1, 2 ou 3\n";
-
-	while (verdade) {
-		getline(std::cin, eficienciaStr);
-		eficienciaInt = stoul(eficienciaStr);
-		if (eficienciaInt < 1 || eficienciaInt > 3) {
-			std::cout << "Eficiencia invalida.";
-			break;
-		} else {
-			verdade = false;
-		}
-	}
-	return eficienciaInt;
-}
-
-string mercado() {
- 	string nomeMercado;
- 	bool verdade = true;
- 	cout << "Digite o nome do Supermercado.\n";
- 	while (verdade) {
- 		getline(std::cin, nomeMercado);
- 		if (nomeMercado == "") {
- 			std::cout << "Nome inválido.\n";
- 			break;
- 		} else {
- 			verdade = false;
- 		}
- 	}
- 	return nomeMercado;
- }
-
-int simulacao() {
- 	std::string tempoSimulacaoStr;
- 	int tempoSimulacaoInt;
- 	bool verdade = true;
- 	std::cout << "Digite o tempo de simulacao.\n";
-
- 	while (verdade) {
- 		getline(std::cin, tempoSimulacaoStr);
- 		tempoSimulacaoInt = std::stoi(tempoSimulacaoStr);
- 		if (tempoSimulacaoInt < 0) {
- 			std::cout << "Tempo inválido.\n";
- 			break;
- 		} else {
- 			verdade = false;
- 		}
- 	}
- 	return tempoSimulacaoInt;
- }
-
-int tempoMedioChegada() {
-	std::string tempoMedioChegadaStr;
-	int tempoMedioChegadaInt;
-	bool verdade = true;
-	cout << "Digite o tempo medio de chegada de clientes.\n";
-
-	while (verdade) {
-		getline(std::cin, tempoMedioChegadaStr);
-		tempoMedioChegadaInt = std::stoi(tempoMedioChegadaStr);
-		if (tempoMedioChegadaInt < 0) {
-			std::cout << "Tempo invalido.\n";
-			break;
-		} else {
-			verdade = false;
-		}
-	}
-	return tempoMedioChegadaInt;
+void mensagemExecucao() {
+	cout << "Selecione a forma de entrada da simulacao:\n";
+	cout << "----- 1: Atraves de arquivo salvo.\n";			
+	cout << "----- 0: Digitar dados.\n";
 }
 
 int main(int argc, char **argv) {
-	int numCaixa, sim, tempoMedio;
-	string nome;
 	mensagemExecucao();
 	if (execucao()) {
 		leituraInfo();
 	} else {
-		nome = mercado();
-		sim = simulacao();
-		tempoMedio = tempoMedioChegada();
-		numCaixa = totalCaixa();
-		cout << "Nome do Supermercado: \n" << nome;
-		cout << "Tempo de Simulacao: " << sim << " horas\n";
-		cout << "Tempo medio de chegada de clientes: " << tempoMedio << " segundo\n";
-		cout << "Numero de caixas: " << numCaixa << "\n";
-
-		Cashier* array;
-		array = new Cashier[numCaixa];
-		for (int i = 0; i < numCaixa; i++) {
-			string nomeCaixa = idCaixa();
-			int eficiencia = eficienciaCaixa();
-			int salario = salarioCaixa();
-
-			cout << "Nome: " << nomeCaixa << endl;
-			cout << "Eficiencia: " << eficiencia << endl;
-			cout << "Salario: " << salario << "\n" << endl;
-			superMarket = Supermarket(sim, tempoMedio, numCaixa, nome);
-			Cashier c(eficiencia, salario, nomeCaixa);
-			array[i] = c;
-		}
-		for (int i = 0; i < numCaixa; ++i) {
-			superMarket.circList.push_front(array[i]);
-		}
+		captaInfo();
 	}
-
 	srand (time(NULL));
 	while(superMarket.relogio < superMarket.tempoSimulacao) {
 		for(int i = 0; i < superMarket.circList.size(); ++i){
@@ -346,4 +239,3 @@ int main(int argc, char **argv) {
 	calculaDados();
 	return 0;
 }
-

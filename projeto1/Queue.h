@@ -18,6 +18,26 @@ class LinkedQueue {
         tail = nullptr;
     }
 
+    LinkedQueue(const LinkedQueue& other) {
+        size_ = 0;
+        LinkedQueue queue;
+        for(std::size_t i = other.size(); i > 0; --i) {
+            T copy(other.at(i - 1));
+            queue.enqueue(copy);
+        }
+        std::swap(head, queue.head);
+        std::swap(size_, queue.size_);
+        std::swap(tail, queue.tail);
+    }
+
+    LinkedQueue& operator=(const LinkedQueue& other) {
+        LinkedQueue queue(other);
+        std::swap(head, queue.head);
+        std::swap(size_, queue.size_);
+        std::swap(tail, queue.tail);
+        return *this;
+    }
+
 //! Destrutor padrão.
 /*!
 */
@@ -104,7 +124,7 @@ class LinkedQueue {
         return size_;
     }
 
-    T& at(int k) {
+    T& at(int k) const{
         if (k > size_) throw std::out_of_range("BUG");
     	Node* atual = head;
     	for(int i = 0; i < k; ++i){

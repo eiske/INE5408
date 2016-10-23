@@ -34,7 +34,3 @@ int Client::calculaTempo(int eficiencia) {
 void Client::calculaTempoSaida(int eficiencia, int tempoAnterior) {
 	tempoDeSaida = tempoDeChegada + calculaTempo(eficiencia) + tempoAnterior;
 }
-
-int Client::calculaTempoAnterior(int eficiencia) {
-	return calculaTempo(eficiencia);
-}
